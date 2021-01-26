@@ -21,6 +21,16 @@ export const Widget = styled.div`
       font-weight: 400;
       line-height: 1;
     }
+    input{
+      border-radius: 5px;
+      padding: 1em;
+      width:100%;
+      margin-bottom: 1em;
+    }
+    button{
+      width: 100%;
+      padding: 0.75em;
+    }
   `;
   
 Widget.Header = styled.header`
@@ -36,6 +46,13 @@ Widget.Header = styled.header`
   `;
   
 Widget.Content = styled.div`
+    form{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    
     padding: 24px 32px 32px 32px;
     & > *:first-child {
       margin-top: 0;

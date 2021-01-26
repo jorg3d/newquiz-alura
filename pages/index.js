@@ -7,6 +7,7 @@ import Widget from '../src/components/Widget';
 import Footer from '../src/components/Footer';
 import GitHubCorner from '../src/components/GitHubCorner';
 import QuizBackground from '../src/components/QuizBackground';
+import LogoAlura from '../src/components/LogoAlura';
 
 
 /*const BackgroundImage = styled.div`
@@ -27,7 +28,7 @@ export const QuizContainer = styled.div`
     }
     `;
 
-
+export const Logo = styled.div
 
 export default function Home() {
   const router = useRouter();
@@ -39,11 +40,15 @@ export default function Home() {
         <title>Quiz Imersão Alura</title>
       </Head>
       <QuizContainer>
+        <LogoAlura/>
         <Widget>
           <Widget.Header>
               <h1>The legend of zelda</h1>
             </Widget.Header>
           <Widget.Content>
+            <p>
+              Teste, neste quiz, seus conhecimentos sobre X e veja se você manja muito sobre X.
+            </p>
             <form onSubmit={function (infosDoEvento){
               infosDoEvento.preventDefault();
               
@@ -61,7 +66,7 @@ export default function Home() {
                 }}
                 placeholder="Diz ai seu nome"/>
               <button type="submit" disabled={name.length === 0}>
-                Jogar {name}
+                Vamos iniciar o quiz, {name}!
               </button>
             </form>
           </Widget.Content>
@@ -72,7 +77,7 @@ export default function Home() {
           <h1>Quizes da Galera</h1>
           </Widget.Header>
         <Widget.Content>
-          <p> lorem ipsum dolor sit amet...</p>
+          <p> Veja, também, alguns outros quizes incríveis feitos por outros alunos da imersão:</p>
         </Widget.Content>
         </Widget>
         <Footer/>

@@ -2,6 +2,7 @@
 import styled from 'styled-components';
 
 const QuizBackground = styled.div`
+  font-family: font-family: 'Roboto', sans-serif;
   width: 100%;
   background-size: cover;
   background-position: center;
