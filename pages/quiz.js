@@ -1,74 +1,122 @@
-import styled from 'styled-components'
-import Head from 'next/head'
-import { useRouter } from 'next/router';
-
+/* eslint-disable react/prop-types */
+import React from 'react';
 import db from '../db.json';
 import Widget from '../src/components/Widget';
-import Footer from '../src/components/Footer';
-import GitHubCorner from '../src/components/GitHubCorner';
+import QuizLogo from '../src/components/QuizLogo';
 import QuizBackground from '../src/components/QuizBackground';
-import LogoAlura from '../src/components/LogoAlura';
-import QuestionBox from '../src/components/QuestionBox';
+import QuizContainer from '../src/components/QuizContainer';
+import Button from '../src/components/Button';
 
+function LoadingWidget() {
+  	return (
+    <Widget>
+      <Widget.Header>
+        Carregando...
+      </Widget.Header>
 
-/*const BackgroundImage = styled.div`
-    background-image: url(${db.bg});
-    flex: 1;
-    background-size: cover;
-    background-position: center;
-    `;
-*/
-export const QuizContainer = styled.div`
-    width: 100%;
-    max-width: 350px;
-    padding-top: 45px;
-    margin: auto 10%;
-    @media screen and (max-width: 500px){
-      margin: auto;
-      padding: 15px
-    }
-    `;
+      <Widget.Content>
+      [Desafio do Loading]
+    </Widget.Content>
+  </Widget>
+);
+}
 
-export const Logo = styled.div
+function QuestionWidget({ question , totalQuestions, questionIndex, onSubmit}){
+  const questionId = `question__${questionIndex}`;
+  return(
+    <Widget>
+    <Widget.Header>
+      {/* <BackLinkArrow href="/" /> */}
+      <h3>
+        {`Pergunta ${questionIndex + 1} de ${totalQuestions}`}
+      </h3>
+    </Widget.Header>
 
+    <img
+      alt="Descrição"
+      style={{
+        width: '100%',
+        height: '150px',
+        objectFit: 'cover',
+      }}
+      src={question.image}
+      />
+    <Widget.Content>
+      <h2>
+        {question.title}
+      </h2>
+      <p>
+        {question.description}
+      </p>
+      <form onSubmit={(infosDoEvento)=>{
+        infosDoEvento.preventDefault();
+        onSubmit();
+      }}>
+        {question.alternatives.map((alternative, alternativeIndex)=>{
+          const alternativeId = `alternative__${alternativeIndex}`
+          return (
+            <Widget.Topic
+              as="label"
+              htmlFor={alternativeId}>
+                
+                <input
+                  //style={{display:'none'}} 
+                  id={alternativeId}
+                  name= {questionId}
+                  type="radio"
+                />
+                {alternative}
+            </Widget.Topic>
+          );
+        })}
+      </form>
+      <Button type="submit">
+        Confirmar
+      </Button>
+    </Widget.Content>
+  </Widget>
+  )
+}
+const screenStates = {
+  QUIZ: 'QUIZ',
+  LOADING: 'LOADING',
+  RESULT: 'RESULT',
+}
 export default function QuizPage() {
+  const [screenState, setScreenState] = React.useState(screenStates.LOADING);
+  const totalQuestions = db.questions.length;
+  const [currentQuestion, setCurrentQuestion] = React.useState(0);
+  const questionIndex = currentQuestion;
+  const question = db.questions[questionIndex];
+
+  React.useEffect(()=>{
+    setTimeout(()=>{
+      setScreenState(screenStates.QUIZ);
+    }, 1*1000);
+  }, []);
   
+  function handleSubmitQuiz(){
+    const nextQuestion = questionIndex + 1;
+    if(nextQuestion < totalQuestions){
+      setCurrentQuestion(nextQuestion);
+    } else {
+      setScreenState(screenStates.RESULT);
+    }
+    
+  }
   return (
     <QuizBackground backgroundImage={db.bg}>
-      <Head>
-        <title>Quiz Imersão Alura</title>
-      </Head>
       <QuizContainer>
-        <LogoAlura/>
-        <Widget>
-          <QuestionBox>
-              <QuestionBox.Header>
-                  Pergunta 01
-              </QuestionBox.Header>
-              <QuestionBox.Content>
-                  <p>
-                    Qual a capital de Pernambuco?
-                  </p>
-                  <ul>
-                      <li>Caruaru</li>
-                      <li>Recife</li>
-                      <li>Petrolina</li>
-                      <li>Jaboatão dos Guararapes</li>
-                      <li>Porto de Galinhas</li>
-                  </ul>
-
-                  <button>
-                      CONFIRMAR
-                  </button>
-              </QuestionBox.Content>
-              
-          </QuestionBox>
-        </Widget>
-        <Footer/>
-    </QuizContainer>
-    <GitHubCorner/>
+        <QuizLogo />
+        {screenState === screenStates.QUIZ && (<QuestionWidget 
+        question={question}
+        questionIndex={questionIndex}
+        totalQuestions={totalQuestions}
+        onSubmit={handleSubmitQuiz}/>)
+        }
+        {screenState === screenStates.LOADING && <LoadingWidget/>}
+        {screenState === screenStates.RESULT && <div>Você acertou X questões, parabéns!</div>}
+      </QuizContainer>
     </QuizBackground>
-    
   );
-
 }

@@ -21,16 +21,6 @@ export const Widget = styled.div`
       font-weight: 400;
       line-height: 1;
     }
-    input{
-      border-radius: 5px;
-      padding: 1em;
-      width:100%;
-      margin-bottom: 1em;
-    }
-    button{
-      width: 100%;
-      padding: 0.75em;
-    }
   `;
   
 Widget.Header = styled.header`
@@ -52,6 +42,10 @@ Widget.Content = styled.div`
       justify-content: center;
       align-items: center;
     }
+
+    div{
+      width:100%;
+    }
     
     padding: 24px 32px 32px 32px;
     & > *:first-child {
@@ -65,5 +59,23 @@ Widget.Content = styled.div`
       padding: 0;
     }
   `;
+  
+Widget.Topic = styled.a`
+  outline: 0;
+  text-decoration: none;
+  color: ${({ theme }) => theme.colors.contrastText};
+  background-color: ${({ theme }) => `${theme.colors.primary}40`};
+  padding: 10px 15px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  border-radius: ${({ theme }) => theme.borderRadius};
+  transition: .3s;
+  display: block;
+  
+  &:hover,
+  &:focus {
+    opacity: .5;
+  }
+`;
 
   export default Widget;
